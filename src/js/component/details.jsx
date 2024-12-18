@@ -1,43 +1,50 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router";
 
-export const Details = (props) => {
+export const Details = () => {
 
-    const [store, actions] = useContext(Context);
-    const [characterData, setCharacterData] = useState(null)
+    const {store, actions} = useContext(Context);
+    
     const {uid} = useParams()
 
     useEffect(()=>{
-        actions.getOne(uid).then((data) => {
-            console.log('datos personaje', data)
-            setCharacterData(data)
-        })
+        console.log(uid)
+        actions.getOne(uid)
+     
     }, [])
+
+    const characterData = store.character;
+    console.log("personajes", characterData)
+
+
 
     return (
         <>
         <div className="container">
-            {characterData && (
-                <div className="card">
+        
+                <div className="card p-4">
                 <div className="d-flex">
                     <figure>
-                        <img src="" alt="" />
+                        <img src={`https://starwars-visualguide.com/assets/img/characters/${uid}.jpg`} alt="" />
                         <figcaption>
-                            {/* {characterData.properties?.name} */}
-                            <h1>Personajes</h1>
+                            {characterData?.name}
+                            
                         </figcaption>
                     </figure>
-                    {/* <div>
-                        <p>eye color: {characterData?.properties?.eye_color}</p>
-                        <p>hair color: {characterData?.properties?.hair_color}</p>
-                        <p>height: {characterData?.properties?.height}</p>
-                        <p>mass: {characterData?.properties?.mass}</p>
-                        <p>skin color: {characterData?.properties?.skin_color}</p>
-                    </div> */}
+                    <div>
+                        <p>Eye color: {characterData?.eye_color}</p>
+                        <p>Hair color: {characterData?.hair_color}</p>
+                        <p>Height: {characterData?.height}</p>
+                        <p>Mass: {characterData?.mass}</p>
+                        <p>Skin color: {characterData?.skin_color}</p>
+                    </div>
+
+        
+
                 </div>
                 </div>
-            )}
+            
             
         </div>
         </>
